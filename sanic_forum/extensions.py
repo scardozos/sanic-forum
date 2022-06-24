@@ -2,9 +2,9 @@ from sanic_ext import Extend
 from sanic_ext.extensions.injection.extension import InjectionExtension
 from sanic_ext.extensions.openapi.extension import OpenAPIExtension
 
-from sanic_template.app import App
-from sanic_template.constants import APP_NAME
-from sanic_template.entities import Bar, Foo
+from sanic_forum.app import App
+from sanic_forum.constants import APP_NAME
+from sanic_forum.entities import Bar, Foo
 
 app = App.get_app(APP_NAME)
 

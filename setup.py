@@ -11,7 +11,7 @@ def open_local(paths, mode="r", encoding="utf8"):
     return codecs.open(path, mode, encoding)
 
 
-with open_local(["sanic_template", "__version__.py"], encoding="latin1") as fp:
+with open_local(["sanic_forum", "__version__.py"], encoding="latin1") as fp:
     try:
         version = re.findall(
             r"^VERSION = \"([^']+)\"\r?$", fp.read(), re.M
@@ -21,15 +21,15 @@ with open_local(["sanic_template", "__version__.py"], encoding="latin1") as fp:
 
 
 setup(
-    name='sanic_template',
+    name='sanic-forum',
     version=version,
-    description='A template for projects based on Sanic',
+    description='A forum, built with Sanic',
     author='prryplatypus',
     author_email='github@prryplatypus.dev',
     packages=find_packages(),
     install_requires=[
         'cerberus',  # Validation
-        'databases',  # Database
+        'mayim[postgres]',  # Database
         'sanic',
         'sanic-ext',
     ],

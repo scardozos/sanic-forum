@@ -4,9 +4,9 @@ from typing import Callable
 
 from sanic.signals import Event
 
-from sanic_template.app import App
-from sanic_template.constants import APP_NAME
-from sanic_template.request import Request
+from sanic_forum.app import App
+from sanic_forum.constants import APP_NAME
+from sanic_forum.request import Request
 
 from . import authentication
 

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from databases import Database
 
-from sanic_template.app import App
-from sanic_template.constants import APP_NAME
+from sanic_forum.app import App
+from sanic_forum.constants import APP_NAME
 
 
 app = App.get_app(APP_NAME)

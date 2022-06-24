@@ -4,9 +4,9 @@ from sanic.response import HTTPResponse, json
 from sanic_ext import openapi
 from sanic_ext.extensions.openapi.definitions import Parameter, Response
 
-import sanic_template.validation as validate
-from sanic_template.entities import Bar
-from sanic_template.validation import validators
+import sanic_forum.validation as validate
+from sanic_forum.entities import Bar
+from sanic_forum.validation import validators
 
 from .responses import PingResponse
 

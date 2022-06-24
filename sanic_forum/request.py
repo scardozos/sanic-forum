@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from sanic import Request as SanicRequest
 
 if TYPE_CHECKING:
-    from sanic_template.app import App
+    from sanic_forum.app import App
 
 
 class Request(SanicRequest):

@@ -6,15 +6,15 @@ from typing import Optional, Sequence, cast
 from sanic import Sanic
 from sanic.exceptions import SanicException
 
-import sanic_template.config as config
-import sanic_template.request as request
-from sanic_template.constants import APP_NAME, ENV_PREFIX
+import sanic_forum.config as config
+import sanic_forum.request as request
+from sanic_forum.constants import APP_NAME, ENV_PREFIX
 
 DEFAULT_MODULES = (
-    "sanic_template.blueprints",
-    "sanic_template.database",
-    "sanic_template.security",  # Must be BEFORE extensions. See note in security/__init__.py.
-    "sanic_template.extensions",
+    "sanic_forum.blueprints",
+    "sanic_forum.database",
+    "sanic_forum.security",  # Must be BEFORE extensions. See note in security/__init__.py.
+    "sanic_forum.extensions",
 )
 
 
