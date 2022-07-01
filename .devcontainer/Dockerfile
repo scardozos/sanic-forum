@@ -3,6 +3,8 @@ ARG VARIANT=3-bullseye
 FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 
 ENV PYTHONUNBUFFERED 1
+ENV SANIC_FORUM_DATABASE_URL postgresql://postgres:postgres@localhost:5432/postgres
+ENV SANIC_FORUM_ENVIRONMENT development
 
 # [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
 ARG NODE_VERSION="none"
