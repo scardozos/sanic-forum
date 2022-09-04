@@ -2,6 +2,7 @@ from sanic_ext.extensions.injection.extension import InjectionExtension
 # from sanic_ext.extensions.openapi.extension import OpenAPIExtension
 
 from sanic_forum.app import App
+from sanic_forum.database import models
 
 
 def setup(app: App) -> None:
@@ -12,3 +13,5 @@ def setup(app: App) -> None:
         ],
         built_in_extensions=False,
     )
+
+    models.setup_injection(app)

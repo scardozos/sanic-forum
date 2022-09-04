@@ -1,6 +1,8 @@
 from uuid import UUID
 
-from .__base__ import BaseModel
+from sanic_forum.enums import ApiVersion
+from .types import UserV1
+from ..__base__ import BaseModel
 
 
 class User(BaseModel):
@@ -8,7 +10,10 @@ class User(BaseModel):
         self.id = id
         self.username = username
 
-    def to_dict(self) -> dict:
+    def serialize(self, version: ApiVersion) -> UserV1:
+        if version != ApiVersion.V1:
+            raise NotImplementedError()
+
         return {
             "id": str(self.id),
             "username": self.username,

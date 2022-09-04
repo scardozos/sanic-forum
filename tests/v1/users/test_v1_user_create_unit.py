@@ -1,7 +1,7 @@
 from unittest.mock import patch
 from mayim.exception import RecordNotFound
 
-from sanic_forum.blueprints.api.v1.users.executor import UserExecutor
+from sanic_forum.database.models import UserExecutor
 
 
 def request_body(user):

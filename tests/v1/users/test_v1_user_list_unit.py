@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from sanic_forum.blueprints.api.v1.users.executor import UserExecutor
+from sanic_forum.database.models import UserExecutor
 
 
 def test_correct_executor_is_requested(bp_testing_app, mayim):

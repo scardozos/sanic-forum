@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 from typing import Optional
 from uuid import UUID
 
-from .__base__ import BaseModel
+from sanic_forum.enums import ApiVersion
+from .types import CategoryV1
+from ..__base__ import BaseModel
 
 
 class Category(BaseModel):
@@ -10,15 +14,20 @@ class Category(BaseModel):
         *,
         id: UUID,
         parent_category_id: Optional[UUID],
-        name: str,
-        display_order: int
+        name: Optional[str],
+        type: int,
+        display_order: Optional[int],
     ) -> None:
         self.id = id
         self.parent_category_id = parent_category_id
         self.name = name
+        self.type = type
         self.display_order = display_order
 
-    def to_dict(self) -> dict:
+    def serialize(self, version: ApiVersion) -> CategoryV1:
+        if version != ApiVersion.V1:
+            raise NotImplementedError()
+
         return {
             "id": str(self.id),
             "parent_category_id": (
@@ -27,5 +36,6 @@ class Category(BaseModel):
                 else None
             ),
             "name": self.name,
+            "type": self.type,
             "display_order": self.display_order,
         }

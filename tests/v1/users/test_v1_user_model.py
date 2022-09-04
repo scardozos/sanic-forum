@@ -1,5 +1,6 @@
 import uuid
 
+from sanic_forum.enums import ApiVersion
 from sanic_forum.database.models import User
 
 
@@ -10,8 +11,8 @@ def test_user_has_expected_properties():
     assert user.username == "test"
 
 
-def test_user_to_dict_method(user):
-    assert user.to_dict() == {
+def test_user_serialize_method(user):
+    assert user.serialize(ApiVersion.V1) == {
         "id": str(user.id),
         "username": user.username,
     }

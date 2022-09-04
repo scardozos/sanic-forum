@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from sanic.exceptions import InvalidUsage
+from sanic.exceptions import BadRequest
 
 
 @dataclass
@@ -8,7 +8,13 @@ class CreateUserRequest:
     username: str
 
     def __post_init__(self):
-        length = len(self.username)
+        self.validate_username()
 
-        if length < 5 or length > 20:
-            raise InvalidUsage("Username must be between 5 and 20 characters")
+    def validate_username(self):
+        length = len(self.username)
+        min_, max_ = 5, 20
+
+        if length < min_ or length > max_:
+            raise BadRequest(
+                f"Username must be between {min_} and {max_} characters"
+            )

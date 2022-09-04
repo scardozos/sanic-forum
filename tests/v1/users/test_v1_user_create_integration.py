@@ -1,6 +1,8 @@
 from unittest.mock import patch
 from mayim.exception import RecordNotFound
 
+from sanic_forum.enums import ApiVersion
+
 
 def test_invalid_requests_are_rejected(bp_testing_app, mayim, user_executor):
     # Ensure existing username check doesn't fail
@@ -40,7 +42,7 @@ def test_request_succeeds_if_valid_username_available(
         _, resp = bp_testing_app.test_client.post("/api/v1/users", json=data)
 
     assert resp.status == 200
-    assert resp.json == user.to_dict()
+    assert resp.json == user.serialize(ApiVersion.V1)
 
 
 def test_request_fails_with_username_len_under_lower_bound(

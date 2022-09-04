@@ -5,38 +5,48 @@ from sanic.request import Request
 from sanic.response import HTTPResponse, json
 from sanic_ext import validate
 
-from .executor import CategoryExecutor
+from sanic_forum.database.models import Category, CategoryExecutor
+from sanic_forum.enums import ApiVersion, CategoryType
 from .requests import CreateCategoryRequest
 
 bp = Blueprint("api-v1-categories", url_prefix="/categories")
 
 
 @bp.get("")
-async def list_all_categories(_: Request) -> HTTPResponse:
+async def list_categories(_: Request) -> HTTPResponse:
     executor = Mayim.get(CategoryExecutor)
     categories = await executor.select_all()
-    return json([category.to_dict() for category in categories])
+    return json([category.serialize(ApiVersion.V1) for category in categories])
 
 
-@bp.post("")
+@bp.post("/<category_id:uuid>")
 @validate(json=CreateCategoryRequest)
 async def create_category(
-    _: Request, body: CreateCategoryRequest
+    _: Request, body: CreateCategoryRequest, parent: Category, **__
 ) -> HTTPResponse:
     executor = Mayim.get(CategoryExecutor)
 
-    qargs = (body.parent_category_id,)
-    if not (await executor.select_bool_by_id(*qargs)):
-        raise BadRequest("Unknown parent category")
+    if (
+        body.type == CategoryType.FORUM_DIVIDER
+        and parent.type != CategoryType.FORUM_ROOT
+    ):
+        raise BadRequest("Divider type can only exist at forum root")
 
-    qargs = (body.parent_category_id, body.name)
+    # Name does not exist
+    qargs = (parent.id, body.type, body.name)
     if await executor.select_bool_by_name(*qargs):
         raise BadRequest("Name is already in use")
 
-    qargs = (body.parent_category_id, body.display_order)
-    await executor.update_for_insert(*qargs)
+    async with executor.transaction():
+        qargs = (parent.id, body.type, body.display_order)
+        await executor.update_for_insert(*qargs)
 
-    qargs = (body.parent_category_id, body.name, body.display_order)
-    category = await executor.insert_and_return(*qargs)
+        qargs = (
+            parent.id,
+            body.type,
+            body.name,
+            body.display_order,
+        )
+        category = await executor.insert_and_return(*qargs)
 
-    return json(category.to_dict())
+    return json(category.serialize(ApiVersion.V1))

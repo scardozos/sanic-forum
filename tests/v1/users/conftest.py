@@ -16,6 +16,11 @@ def user_executor(user):
     executor.insert_user = AsyncMock(return_value=user)
     executor.select_all_users = AsyncMock(return_value=[user])
     executor.select_user_by_username = AsyncMock(return_value=user)
+
+    transaction = AsyncMock()
+    transaction.__aenter__ = AsyncMock()
+    executor.transaction = Mock(return_value=transaction)
+
     return executor
 
 
