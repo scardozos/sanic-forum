@@ -12,11 +12,10 @@ import sanic_forum.request as request
 from sanic_forum.constants import APP_NAME, ENV_PREFIX
 
 DEFAULT_MODULES = (
-    "sanic_forum.blueprints",
-    # ↓ Order of these matters
-    "sanic_forum.security",  # Must be BEFORE extensions (see its __init__.py)
-    "sanic_forum.extensions",
+    "sanic_forum.api",
     "sanic_forum.database",
+    "sanic_forum.security",
+    "sanic_forum.extensions",
     "sanic_forum.pagination",
 )
 

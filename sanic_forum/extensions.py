@@ -1,8 +1,9 @@
+from sanic.signals import Event
+from sanic_ext import Config
 from sanic_ext.extensions.injection.extension import InjectionExtension
 # from sanic_ext.extensions.openapi.extension import OpenAPIExtension
 
 from sanic_forum.app import App
-from sanic_forum.database import models
 
 
 def setup(app: App) -> None:
@@ -12,6 +13,7 @@ def setup(app: App) -> None:
             # OpenAPIExtension,
         ],
         built_in_extensions=False,
+        config=Config(
+            injection_signal=Event.HTTP_HANDLER_BEFORE
+        )
     )
-
-    models.setup_injection(app)

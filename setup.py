@@ -36,8 +36,9 @@ setup(
     packages=find_packages(),
     install_requires=[
         'mayim[postgres]',  # Database
-        'sanic',
-        'sanic-ext',
+        'python-dotenv',  # Environment variables
+        'sanic>=22.9.0',
+        'sanic-ext>=22.9.0',
     ],
     extras_require={
         'migrate': MIGRATE_REQUIRES,
