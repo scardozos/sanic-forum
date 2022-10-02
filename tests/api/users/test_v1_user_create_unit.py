@@ -1,4 +1,5 @@
 from unittest.mock import patch
+
 from mayim.exception import RecordNotFound
 
 from sanic_forum.api.users.executor import UserExecutor
@@ -31,9 +32,7 @@ def test_executor_is_used_to_check_for_existing_username(
             "/api/v1/users", json=request_body(user)
         )
 
-    user_executor.select_by_username.assert_called_once_with(
-        user.username
-    )
+    user_executor.select_by_username.assert_called_once_with(user.username)
 
 
 def test_user_is_not_inserted_if_username_exists(

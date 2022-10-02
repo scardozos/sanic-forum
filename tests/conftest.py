@@ -1,5 +1,4 @@
 import pytest
-
 from sanic_testing import TestManager
 
 from sanic_forum.app import App, create
@@ -7,10 +6,12 @@ from sanic_forum.app import App, create
 
 @pytest.fixture(scope="session")
 def bp_testing_app() -> App:
-    app_ = create([
-        "sanic_forum.api",
-        "sanic_forum.extensions",
-        "sanic_forum.pagination",
-    ])
+    app_ = create(
+        [
+            "sanic_forum.api",
+            "sanic_forum.extensions",
+            "sanic_forum.pagination",
+        ]
+    )
     TestManager(app_)
     return app_

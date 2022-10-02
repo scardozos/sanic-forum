@@ -1,6 +1,7 @@
-import pytest
 import uuid
 from unittest.mock import AsyncMock, Mock
+
+import pytest
 
 from sanic_forum.api.users.model import User
 

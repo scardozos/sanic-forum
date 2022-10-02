@@ -3,6 +3,7 @@ from typing import List
 from mayim import register
 
 from sanic_forum.base.executor import BaseExecutor
+
 from .model import User
 
 

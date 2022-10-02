@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from sanic_forum.enums import ApiVersion
+
 from .responses import CategoryV1
 
 
@@ -15,7 +16,7 @@ class Category(object):
         name: Optional[str],
         type: int,
         display_order: Optional[int],
-        **_
+        **_,
     ) -> None:
         self.id = id
         self.parent_category_id = parent_category_id

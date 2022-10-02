@@ -1,4 +1,5 @@
 from unittest.mock import patch
+
 from mayim.exception import RecordNotFound
 
 from sanic_forum.enums import ApiVersion

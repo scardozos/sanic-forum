@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from sanic_forum.enums import ApiVersion
+
 from .responses import UserV1
 
 

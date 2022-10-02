@@ -10,7 +10,7 @@ from sanic_forum.enums import ApiVersion
         (1, None, "Root divider", 1, 0),
         (2, None, "Root forum", 2, 1),
         (3, 2, "Child forum", 2, 0),
-    ]
+    ],
 )
 def test_category_properties(
     id, parent_category_id, name, type, display_order

@@ -1,5 +1,6 @@
+from unittest.mock import Mock
+
 import pytest
-from unittest.mock import AsyncMock, Mock
 
 from sanic_forum.api.categories.model import Category
 from sanic_forum.enums import CategoryType
@@ -41,11 +42,6 @@ def forum_category(forum_divider: Category):
 @pytest.fixture
 def executor():
     executor = Mock()
-
-    transaction = AsyncMock()
-    transaction.__aenter__ = AsyncMock()
-    executor.transaction = Mock(return_value=transaction)
-
     return executor
 
 

@@ -16,4 +16,7 @@ CREATE TABLE forum.category (
 );
 
 
+CREATE INDEX ix_category_type_bases ON forum.category (type) WHERE type = 1;
+
+
 INSERT INTO forum.category (type) VALUES (1);

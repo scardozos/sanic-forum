@@ -3,6 +3,7 @@ from typing import List
 from mayim import register
 
 from sanic_forum.base.executor import BaseExecutor
+
 from .model import Category
 
 
@@ -26,6 +27,9 @@ class CategoryExecutor(BaseExecutor):
     async def select_name_exists(
         self, parent_category_id: int, type: int, name: str
     ) -> bool:
+        ...
+
+    async def select_root(self) -> List[Category]:
         ...
 
     async def update_for_insert(

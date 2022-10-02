@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from sanic.exceptions import BadRequest
+
 from sanic_forum.enums import CategoryType
 
 

@@ -1,7 +1,7 @@
 import uuid
 
-from sanic_forum.enums import ApiVersion
 from sanic_forum.api.users.model import User
+from sanic_forum.enums import ApiVersion
 
 
 def test_user_has_expected_properties():

@@ -6,9 +6,10 @@ from sanic.request import Request
 from sanic.response import HTTPResponse, json
 from sanic_ext import validate
 
-from .executor import UserExecutor
 from sanic_forum.enums import ApiVersion
 from sanic_forum.pagination import Pagination
+
+from .executor import UserExecutor
 from .requests import CreateUserRequest
 
 bp = Blueprint("api-v1-users", url_prefix="/users", version=1)
