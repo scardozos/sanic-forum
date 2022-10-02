@@ -11,15 +11,15 @@ class Category(object):
     def __init__(
         self,
         *,
-        id: UUID,
-        parent_category_id: Optional[UUID],
+        uuid: UUID,
+        parent_category_uuid: Optional[UUID],
         name: Optional[str],
         type: int,
         display_order: Optional[int],
         **_
     ) -> None:
-        self.id = id
-        self.parent_category_id = parent_category_id
+        self.uuid = uuid
+        self.parent_category_uuid = parent_category_uuid
         self.name = name
         self.type = type
         self.display_order = display_order
@@ -29,10 +29,10 @@ class Category(object):
             raise NotImplementedError()
 
         return {
-            "id": str(self.id),
-            "parent_category_id": (
-                str(self.parent_category_id)
-                if self.parent_category_id
+            "uuid": str(self.uuid),
+            "parent_category_uuid": (
+                str(self.parent_category_uuid)
+                if self.parent_category_uuid
                 else None
             ),
             "name": self.name,

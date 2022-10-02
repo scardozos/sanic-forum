@@ -21,14 +21,14 @@ async def list_categories(_: Request) -> HTTPResponse:
     return json([category.serialize(ApiVersion.V1) for category in categories])
 
 
-@bp.post("/<category_id:uuid>")
+@bp.post("/<category_uuid:uuid>")
 @validate(json=CreateCategoryRequest)
 async def create_category(
-    _: Request, body: CreateCategoryRequest, category_id: UUID, **__
+    _: Request, body: CreateCategoryRequest, category_uuid: UUID, **__
 ) -> HTTPResponse:
     executor = Mayim.get(CategoryExecutor)
 
-    parent = await executor.select_by_id(category_id)
+    parent = await executor.select_by_uuid(category_uuid)
 
     if (
         body.type == CategoryType.FORUM_DIVIDER
@@ -37,20 +37,20 @@ async def create_category(
         raise BadRequest("Divider type can only exist at forum root")
 
     # Name does not exist
-    qargs = (parent.id, body.type, body.name)
-    if await executor.check_name_exists(*qargs):
+    qargs = (parent.uuid, body.type, body.name)
+    if await executor.select_name_exists(*qargs):
         raise BadRequest("Name is already in use")
 
     async with executor.transaction():
-        qargs = (parent.id, body.type, body.display_order)
+        qargs = (parent.uuid, body.type, body.display_order)
         await executor.update_for_insert(*qargs)
 
         qargs = (
-            parent.id,
+            parent.uuid,
             body.type,
             body.name,
             body.display_order,
         )
-        category = await executor.insert(*qargs)
+        category = await executor.insert_and_return(*qargs)
 
     return json(category.serialize(ApiVersion.V1))

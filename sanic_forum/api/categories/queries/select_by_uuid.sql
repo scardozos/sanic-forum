@@ -1,3 +1,3 @@
 SELECT * FROM forum.category
-WHERE id = $id
+WHERE uuid = $uuid
 LIMIT 1;

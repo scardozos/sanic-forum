@@ -6,7 +6,7 @@ from sanic_forum.enums import ApiVersion
 
 
 @pytest.mark.parametrize(
-    "id,parent_category_id,name,type,display_order",
+    "uuid,parent_category_uuid,name,type,display_order",
     [
         (uuid.uuid4(), None, "Root divider", 1, 0),
         (uuid.uuid4(), None, "Root forum", 2, 1),
@@ -14,17 +14,17 @@ from sanic_forum.enums import ApiVersion
     ]
 )
 def test_category_properties(
-    id, parent_category_id, name, type, display_order
+    uuid, parent_category_uuid, name, type, display_order
 ):
     category = Category(
-        id=id,
-        parent_category_id=parent_category_id,
+        uuid=uuid,
+        parent_category_uuid=parent_category_uuid,
         name=name,
         type=type,
         display_order=display_order,
     )
-    assert category.id == id
-    assert category.parent_category_id == parent_category_id
+    assert category.uuid == uuid
+    assert category.parent_category_uuid == parent_category_uuid
     assert category.name == name
     assert category.type == type
     assert category.display_order == display_order
@@ -42,10 +42,10 @@ def test_category_serialization(category, request):
     category = request.getfixturevalue(category)
 
     assert category.serialize(ApiVersion.V1) == {
-        "id": str(category.id),
-        "parent_category_id": (
-            str(category.parent_category_id)
-            if category.parent_category_id else None
+        "uuid": str(category.uuid),
+        "parent_category_uuid": (
+            str(category.parent_category_uuid)
+            if category.parent_category_uuid else None
         ),
         "name": category.name,
         "type": category.type,
