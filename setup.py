@@ -38,7 +38,9 @@ setup(
         'mayim[postgres]',  # Database
         'python-dotenv',  # Environment variables
         'sanic>=22.9.0',
-        'sanic-ext>=22.9.0',
+        # 'sanic-ext>=22.9.0',
+        'sanic-ext @ git+https://github.com/sanic-org/'
+        'sanic-ext.git@prry/fix-injector-args',
     ],
     extras_require={
         'migrate': MIGRATE_REQUIRES,
