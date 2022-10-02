@@ -2,8 +2,8 @@ from typing import Optional, TypedDict
 
 
 class CategoryV1(TypedDict):
-    uuid: str
-    parent_category_uuid: Optional[str]
+    id: int
+    parent_category_id: Optional[int]
     name: Optional[str]
     type: int
     display_order: Optional[int]

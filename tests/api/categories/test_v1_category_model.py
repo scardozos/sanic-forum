@@ -1,4 +1,3 @@
-import uuid
 import pytest
 
 from sanic_forum.api.categories.model import Category
@@ -6,25 +5,25 @@ from sanic_forum.enums import ApiVersion
 
 
 @pytest.mark.parametrize(
-    "uuid,parent_category_uuid,name,type,display_order",
+    "id,parent_category_id,name,type,display_order",
     [
-        (uuid.uuid4(), None, "Root divider", 1, 0),
-        (uuid.uuid4(), None, "Root forum", 2, 1),
-        (uuid.uuid4(), uuid.uuid4(), "Child forum", 2, 0),
+        (1, None, "Root divider", 1, 0),
+        (2, None, "Root forum", 2, 1),
+        (3, 2, "Child forum", 2, 0),
     ]
 )
 def test_category_properties(
-    uuid, parent_category_uuid, name, type, display_order
+    id, parent_category_id, name, type, display_order
 ):
     category = Category(
-        uuid=uuid,
-        parent_category_uuid=parent_category_uuid,
+        id=id,
+        parent_category_id=parent_category_id,
         name=name,
         type=type,
         display_order=display_order,
     )
-    assert category.uuid == uuid
-    assert category.parent_category_uuid == parent_category_uuid
+    assert category.id == id
+    assert category.parent_category_id == parent_category_id
     assert category.name == name
     assert category.type == type
     assert category.display_order == display_order
@@ -39,15 +38,16 @@ def test_category_properties(
     ],
 )
 def test_category_serialization(category, request):
-    category = request.getfixturevalue(category)
+    category_: Category = request.getfixturevalue(category)
 
-    assert category.serialize(ApiVersion.V1) == {
-        "uuid": str(category.uuid),
-        "parent_category_uuid": (
-            str(category.parent_category_uuid)
-            if category.parent_category_uuid else None
+    assert category_.serialize(ApiVersion.V1) == {
+        "id": category_.id,
+        "parent_category_id": (
+            category_.parent_category_id
+            if category_.parent_category_id is not None
+            else None
         ),
-        "name": category.name,
-        "type": category.type,
-        "display_order": category.display_order,
+        "name": category_.name,
+        "type": category_.type,
+        "display_order": category_.display_order,
     }

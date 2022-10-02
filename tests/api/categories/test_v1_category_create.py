@@ -17,7 +17,7 @@ def test_unknown_parameters_raise_bad_request_error(
 ):
     data = {"invalid_field": "abcdefg"}
     _, resp = bp_testing_app.test_client.post(
-        f"/api/v1/categories/{forum_root.uuid}", json=data
+        f"/api/v1/categories/{forum_root.id}", json=data
     )
 
     assert resp.status == 400
@@ -27,13 +27,13 @@ def test_valid_request_body_succeeds(
     bp_testing_app, executor, forum_divider, forum_root, mayim
 ):
     executor.select_by_id = AsyncMock(return_value=forum_root)
-    executor.check_name_exists = AsyncMock(return_value=False)
+    executor.select_name_exists = AsyncMock(return_value=False)
     executor.update_for_insert = AsyncMock()
-    executor.insert = AsyncMock(return_value=forum_divider)
+    executor.insert_and_return = AsyncMock(return_value=forum_divider)
 
     with patch("sanic_forum.api.categories.v1.Mayim", mayim):
         _, resp = bp_testing_app.test_client.post(
-            f"/api/v1/categories/{forum_root.uuid}", json=VALID_REQUEST_BODY
+            f"/api/v1/categories/{forum_root.id}", json=VALID_REQUEST_BODY
         )
 
     assert resp.status == 200
@@ -65,9 +65,9 @@ def test_parameter_validation(
     expected,
 ):
     executor.select_by_id = AsyncMock(return_value=forum_root)
-    executor.check_name_exists = AsyncMock(return_value=False)
+    executor.select_name_exists = AsyncMock(return_value=False)
     executor.update_for_insert = AsyncMock()
-    executor.insert = AsyncMock(return_value=forum_divider)
+    executor.insert_and_return = AsyncMock(return_value=forum_divider)
 
     with patch("sanic_forum.api.categories.v1.Mayim", mayim):
         # Valid request data by default
@@ -75,7 +75,7 @@ def test_parameter_validation(
         data[name] = val
 
         _, resp = bp_testing_app.test_client.post(
-            f"/api/v1/categories/{forum_root.uuid}", json=data
+            f"/api/v1/categories/{forum_root.id}", json=data
         )
 
     assert resp.status == expected
@@ -89,9 +89,9 @@ def test_divider_cannot_be_created_if_not_under_root(
     mayim,
 ):
     executor.select_by_id = AsyncMock(return_value=forum_category)
-    executor.check_name_exists = AsyncMock(return_value=False)
+    executor.select_name_exists = AsyncMock(return_value=False)
     executor.update_for_insert = AsyncMock()
-    executor.insert = AsyncMock(return_value=forum_divider)
+    executor.insert_and_return = AsyncMock(return_value=forum_divider)
 
     with patch("sanic_forum.api.categories.v1.Mayim", mayim):
         # Valid request data by default
@@ -99,7 +99,7 @@ def test_divider_cannot_be_created_if_not_under_root(
         data["type"] = CategoryType.FORUM_DIVIDER.value
 
         _, resp = bp_testing_app.test_client.post(
-            f"/api/v1/categories/{forum_category.uuid}", json=data
+            f"/api/v1/categories/{forum_category.id}", json=data
         )
 
     assert resp.status == 400
@@ -112,11 +112,11 @@ def test_duplicate_category_name_raises_bad_request(
     mayim,
 ):
     executor.select_by_id = AsyncMock(return_value=forum_root)
-    executor.check_name_exists = AsyncMock(return_value=True)
+    executor.select_name_exists = AsyncMock(return_value=True)
 
     with patch("sanic_forum.api.categories.v1.Mayim", mayim):
         _, resp = bp_testing_app.test_client.post(
-            f"/api/v1/categories/{forum_root.uuid}", json=VALID_REQUEST_BODY
+            f"/api/v1/categories/{forum_root.id}", json=VALID_REQUEST_BODY
         )
 
     assert resp.status == 400
@@ -126,9 +126,9 @@ def test_created_category_is_returned(
     bp_testing_app, executor, forum_divider, forum_root, mayim
 ):
     executor.select_by_id = AsyncMock(return_value=forum_root)
-    executor.check_name_exists = AsyncMock(return_value=False)
+    executor.select_name_exists = AsyncMock(return_value=False)
     executor.update_for_insert = AsyncMock()
-    executor.insert = AsyncMock(return_value=forum_divider)
+    executor.insert_and_return = AsyncMock(return_value=forum_divider)
 
     with patch("sanic_forum.api.categories.v1.Mayim", mayim):
         data = {
@@ -138,7 +138,7 @@ def test_created_category_is_returned(
         }
 
         _, resp = bp_testing_app.test_client.post(
-            f"/api/v1/categories/{forum_divider.parent_category_uuid}",
+            f"/api/v1/categories/{forum_divider.parent_category_id}",
             json=data,
         )
 

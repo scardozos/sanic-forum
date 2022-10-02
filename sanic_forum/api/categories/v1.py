@@ -1,4 +1,3 @@
-from uuid import UUID
 from mayim import Mayim
 from sanic import Blueprint
 from sanic.exceptions import BadRequest
@@ -21,14 +20,14 @@ async def list_categories(_: Request) -> HTTPResponse:
     return json([category.serialize(ApiVersion.V1) for category in categories])
 
 
-@bp.post("/<category_uuid:uuid>")
+@bp.post("/<category_id:int>")
 @validate(json=CreateCategoryRequest)
 async def create_category(
-    _: Request, body: CreateCategoryRequest, category_uuid: UUID, **__
+    _: Request, body: CreateCategoryRequest, category_id: int, **__
 ) -> HTTPResponse:
     executor = Mayim.get(CategoryExecutor)
 
-    parent = await executor.select_by_uuid(category_uuid)
+    parent = await executor.select_by_id(category_id)
 
     if (
         body.type == CategoryType.FORUM_DIVIDER
@@ -37,16 +36,16 @@ async def create_category(
         raise BadRequest("Divider type can only exist at forum root")
 
     # Name does not exist
-    qargs = (parent.uuid, body.type, body.name)
+    qargs = (parent.id, body.type, body.name)
     if await executor.select_name_exists(*qargs):
         raise BadRequest("Name is already in use")
 
     async with executor.transaction():
-        qargs = (parent.uuid, body.type, body.display_order)
+        qargs = (parent.id, body.type, body.display_order)
         await executor.update_for_insert(*qargs)
 
         qargs = (
-            parent.uuid,
+            parent.id,
             body.type,
             body.name,
             body.display_order,

@@ -1,5 +1,4 @@
-from typing import List, Union
-from uuid import UUID
+from typing import List
 
 from mayim import register
 
@@ -11,7 +10,7 @@ from .model import Category
 class CategoryExecutor(BaseExecutor):
     async def insert_and_return(
         self,
-        parent_category_uuid: Union[str, UUID],
+        parent_category_id: int,
         type: int,
         name: str,
         display_order: int,
@@ -21,17 +20,17 @@ class CategoryExecutor(BaseExecutor):
     async def select_all(self) -> List[Category]:
         ...
 
-    async def select_by_uuid(self, uuid: Union[str, UUID]) -> Category:
+    async def select_by_id(self, id: int) -> Category:
         ...
 
     async def select_name_exists(
-        self, parent_category_uuid: Union[str, UUID], type: int, name: str
+        self, parent_category_id: int, type: int, name: str
     ) -> bool:
         ...
 
     async def update_for_insert(
         self,
-        parent_category_uuid: Union[str, UUID],
+        parent_category_id: int,
         type: int,
         display_order: int,
     ) -> None:

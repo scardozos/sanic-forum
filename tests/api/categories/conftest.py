@@ -1,5 +1,4 @@
 import pytest
-import uuid
 from unittest.mock import AsyncMock, Mock
 
 from sanic_forum.api.categories.model import Category
@@ -9,8 +8,8 @@ from sanic_forum.enums import CategoryType
 @pytest.fixture
 def forum_root():
     return Category(
-        uuid=uuid.uuid4(),
-        parent_category_uuid=None,
+        id=1,
+        parent_category_id=None,
         name=None,
         display_order=None,
         type=CategoryType.FORUM_ROOT.value,
@@ -18,10 +17,10 @@ def forum_root():
 
 
 @pytest.fixture
-def forum_divider(forum_root):
+def forum_divider(forum_root: Category):
     return Category(
-        uuid=uuid.uuid4(),
-        parent_category_uuid=forum_root.uuid,
+        id=2,
+        parent_category_id=forum_root.id,
         name="All categories",
         display_order=1,
         type=CategoryType.FORUM_DIVIDER.value,
@@ -29,10 +28,10 @@ def forum_divider(forum_root):
 
 
 @pytest.fixture
-def forum_category(forum_divider):
+def forum_category(forum_divider: Category):
     return Category(
-        uuid=uuid.uuid4(),
-        parent_category_uuid=forum_divider.uuid,
+        id=3,
+        parent_category_id=forum_divider.id,
         name="General",
         display_order=1,
         type=CategoryType.FORUM_CATEGORY.value,

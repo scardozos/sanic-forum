@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import Optional
-from uuid import UUID
 
 from sanic_forum.enums import ApiVersion
 from .responses import CategoryV1
@@ -11,15 +10,15 @@ class Category(object):
     def __init__(
         self,
         *,
-        uuid: UUID,
-        parent_category_uuid: Optional[UUID],
+        id: int,
+        parent_category_id: Optional[int],
         name: Optional[str],
         type: int,
         display_order: Optional[int],
         **_
     ) -> None:
-        self.uuid = uuid
-        self.parent_category_uuid = parent_category_uuid
+        self.id = id
+        self.parent_category_id = parent_category_id
         self.name = name
         self.type = type
         self.display_order = display_order
@@ -29,10 +28,10 @@ class Category(object):
             raise NotImplementedError()
 
         return {
-            "uuid": str(self.uuid),
-            "parent_category_uuid": (
-                str(self.parent_category_uuid)
-                if self.parent_category_uuid
+            "id": self.id,
+            "parent_category_id": (
+                self.parent_category_id
+                if self.parent_category_id is not None
                 else None
             ),
             "name": self.name,

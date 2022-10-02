@@ -2,17 +2,17 @@
 
 
 CREATE TABLE forum.category (
-    uuid UUID DEFAULT uuid_generate_v4(),
-    parent_category_uuid UUID NULL DEFAULT NULL,
+    id SERIAL,
+    parent_category_id INT NULL DEFAULT NULL,
     name CITEXT NULL DEFAULT NULL,
     type SMALLINT NOT NULL,
     display_order SMALLINT NULL DEFAULT NULL,
-    CONSTRAINT pk_category PRIMARY KEY (uuid),
-    CONSTRAINT fk_category_parent_category_uuid FOREIGN KEY (parent_category_uuid)
-        REFERENCES forum.category(uuid),
-    CONSTRAINT uk_category_name UNIQUE (parent_category_uuid, type, name),
+    CONSTRAINT pk_category PRIMARY KEY (id),
+    CONSTRAINT fk_category_parent_category_id FOREIGN KEY (parent_category_id)
+        REFERENCES forum.category(id),
+    CONSTRAINT uk_category_name UNIQUE (parent_category_id, type, name),
     CONSTRAINT uk_category_display_order
-        UNIQUE (parent_category_uuid, type, display_order)
+        UNIQUE (parent_category_id, type, display_order)
 );
 
 
