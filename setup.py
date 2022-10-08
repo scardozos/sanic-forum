@@ -13,16 +13,20 @@ def open_local(paths, mode="r", encoding="utf8"):
 
 with open_local(["sanic_forum", "__version__.py"], encoding="latin1") as fp:
     try:
-        version = re.findall(
-            r"^VERSION = \"([^']+)\"\r?$", fp.read(), re.M
-        )[0]
+        version = re.findall(r"^VERSION = \"([^']+)\"\r?$", fp.read(), re.M)[0]
     except IndexError:
         raise RuntimeError("Unable to determine version.")
 
 
 MIGRATE_REQUIRES = ['yoyo-migrations', 'psycopg2']
 TEST_REQUIRES = [
-    'black', 'flake8', 'isort', 'pytest', 'pytest-asyncio', 'sanic-testing'
+    'black',
+    'flake8',
+    'isort',
+    'pydantic-factories',
+    'pytest',
+    'pytest-asyncio',
+    'sanic-testing',
 ]
 DEV_REQUIRES = MIGRATE_REQUIRES + TEST_REQUIRES
 
@@ -33,9 +37,10 @@ setup(
     description='A forum, built with Sanic',
     author='prryplatypus',
     author_email='github@prryplatypus.dev',
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests"]),
     install_requires=[
         'mayim[postgres]',  # Database
+        'pydantic',
         'python-dotenv',  # Environment variables
         'sanic>=22.9.0',
         # 'sanic-ext>=22.9.0',
@@ -45,6 +50,6 @@ setup(
     extras_require={
         'migrate': MIGRATE_REQUIRES,
         'test': TEST_REQUIRES,
-        'dev': DEV_REQUIRES
-    }
+        'dev': DEV_REQUIRES,
+    },
 )

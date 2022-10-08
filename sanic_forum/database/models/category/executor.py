@@ -18,7 +18,7 @@ class CategoryExecutor(BaseExecutor):
     ) -> Category:
         ...
 
-    async def select_all(self) -> List[Category]:
+    async def select_children(self, category_id: int) -> List[Category]:
         ...
 
     async def select_by_id(self, id: int) -> Category:
@@ -35,7 +35,6 @@ class CategoryExecutor(BaseExecutor):
     async def update_for_insert(
         self,
         parent_category_id: int,
-        type: int,
         display_order: int,
     ) -> None:
         ...
