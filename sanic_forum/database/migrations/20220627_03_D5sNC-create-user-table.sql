@@ -3,6 +3,7 @@
 CREATE TABLE auth.user (
     id SERIAL,
     username CITEXT NOT NULL,
-    CONSTRAINT user_pk PRIMARY KEY (id),
-    CONSTRAINT username_uk UNIQUE (username)
+    CONSTRAINT user_pk PRIMARY KEY (id)
 );
+
+CREATE UNIQUE INDEX user_username_uk ON auth.user (username);

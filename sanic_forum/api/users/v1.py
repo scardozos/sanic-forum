@@ -1,40 +1,36 @@
-from mayim import Mayim
-from mayim.exception import RecordNotFound
 from sanic import Blueprint
-from sanic.exceptions import BadRequest
 from sanic.request import Request
 from sanic.response import HTTPResponse, json
-from sanic_ext import validate
+from sanic_ext import openapi, validate
 
 from sanic_forum.enums import ApiVersion
 from sanic_forum.pagination import Pagination
 
-from .executor import UserExecutor
-from .requests import CreateUserRequest
+from .models.requests import CreateUserRequest
+from .models.responses import UserResponseV1, UsersResponseV1
+from .service import UserService
+
+SERVICE = UserService()
+OPENAPI_TAG = "Users"
 
 bp = Blueprint("api-v1-users", url_prefix="/users", version=1)
 
 
 @bp.get("")
+@openapi.tag(OPENAPI_TAG)
+@openapi.parameter("limit", int, "query", required=False)
+@openapi.parameter("offset", int, "query", required=False)
+@openapi.response(200, UsersResponseV1)
 async def list_all_users(_: Request, pagination: Pagination) -> HTTPResponse:
-    executor = Mayim.get(UserExecutor)
-    users = await executor.select_all(pagination.limit, pagination.offset)
-    return json([user.serialize(ApiVersion.V1) for user in users])
+    users = await SERVICE.get_all(pagination.limit, pagination.offset)
+    return json({"users": [user.serialize(ApiVersion.V1) for user in users]})
 
 
 @bp.post("")
+@openapi.tag(OPENAPI_TAG)
+@openapi.body(CreateUserRequest)
+@openapi.response(200, UserResponseV1)
 @validate(json=CreateUserRequest)
 async def create_user(_: Request, body: CreateUserRequest) -> HTTPResponse:
-    executor = Mayim.get(UserExecutor)
-
-    async with executor.transaction():
-        try:
-            await executor.select_by_username(body.username)
-        except RecordNotFound:
-            pass
-        else:
-            raise BadRequest("Username is not available")
-
-        user = await executor.insert(body.username)
-
-    return json(user.serialize(ApiVersion.V1))
+    user = await SERVICE.create(body)
+    return json({"user": user.serialize(ApiVersion.V1)})

@@ -9,7 +9,7 @@ from .model import User
 
 @register
 class UserExecutor(BaseExecutor):
-    async def insert(self, username: str) -> User:
+    async def insert_and_return(self, username: str) -> User:
         ...
 
     async def select_all(self, limit: int, offset: int) -> List[User]:
