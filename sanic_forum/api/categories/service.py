@@ -45,7 +45,6 @@ class CategoryService(object):
         async with executor.transaction():
             qargs = (parent.id, body.display_order)
             await executor.update_for_insert(*qargs)
-
             qargs = (
                 parent.id,
                 body.type.value,

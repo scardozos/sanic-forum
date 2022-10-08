@@ -13,11 +13,6 @@ from sanic_forum.enums import ApiVersion, CategoryType
 class CategoryFactory(ModelFactory):
     __model__ = Category
 
-
-class CreateCategoryRequestFactory(ModelFactory):
-    __model__ = CreateCategoryRequest
-
-
 def test_list_root_categories(bp_testing_app: App):
     category: Category = CategoryFactory.build()
     get_root = AsyncMock(return_value=[category])
