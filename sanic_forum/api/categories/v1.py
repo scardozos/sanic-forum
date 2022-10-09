@@ -20,7 +20,7 @@ bp = Blueprint("api-v1-categories", url_prefix="/categories", version=1)
 
 @bp.get("/__root__")
 @openapi.tag(OPENAPI_TAG)
-@openapi.response(200, ListChildrenCategoriesResponseV1)
+@openapi.response(200, ListRootCategoriesResponseV1)
 async def list_root_categories(_: Request) -> HTTPResponse:
     root_categories = await SERVICE.get_root()
     response = [cat.serialize(ApiVersion.V1) for cat in root_categories]
